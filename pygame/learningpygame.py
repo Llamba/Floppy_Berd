@@ -41,20 +41,22 @@ while running:
 
     if not game_over:
         time_now = pygame.time.get_ticks()
-        if time_now - lastpipe > pipe_frequency:
-            ground_scroll -= scroll_speed
+        if time_now >= 1500:
             btm_pipe = Pipes(screenx, int(screeny / 2) + pipe_gap / 2, -1)
             top_pipe = Pipes(screenx, int(screeny / 2) - pipe_gap / 2, 1)
             pipe_group.add(btm_pipe)
             pipe_group.add(top_pipe)
+            time_now = 0
 
     screen.blit(bg, (0, 0))
     screen.blit(trees_img, (ground_scroll, 610))
+    ground_scroll -= scroll_speed
 
     berd_group.draw(screen)
     pipe_group.draw(screen)
 
     berd_group.update()
+    pipe_group.update()
 
     if ground_scroll == -1920:
         ground_scroll = 0
