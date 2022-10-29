@@ -1,5 +1,6 @@
 import pygame
 from flappy_bird import Bird
+from Pipes import Pipes
 
 pygame.init()
 
@@ -22,10 +23,13 @@ flying = False
 game_over = False
 
 berd_group = pygame.sprite.Group()
-
-berd = Bird(100, screeny / 2)
+berd = Bird(100, int(screeny) / 2)
+pipe_group = pygame.sprite.Group()
+btm_pipe = Pipes(300, int(screeny / 2))
 
 berd_group.add(berd)
+pipe_group.add(btm_pipe)
+
 
 while running:
 
@@ -39,6 +43,7 @@ while running:
         ground_scroll -= scroll_speed
 
     berd_group.draw(screen)
+    pipe_group.draw(screen)
     berd_group.update()
 
     if ground_scroll == -1920:
