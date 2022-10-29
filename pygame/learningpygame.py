@@ -21,29 +21,39 @@ ground_scroll = 0
 scroll_speed = 2
 flying = False
 game_over = False
+pipe_gap = 100
+pipe_frequency = 1500  # miliseconds
+lastpipe = pygame.time.get_ticks()
 
 berd_group = pygame.sprite.Group()
 berd = Bird(100, int(screeny) / 2)
-pipe_group = pygame.sprite.Group()
-btm_pipe = Pipes(300, int(screeny / 2))
 
 berd_group.add(berd)
-pipe_group.add(btm_pipe)
 
+pipe_group = pygame.sprite.Group()
 
 while running:
 
     clock.tick(fps)
 
-    if berd.rect.y < 900:
+    if berd.rect.y > 900:
         game_over = True
+
+    if not game_over:
+        time_now = pygame.time.get_ticks()
+        if time_now - lastpipe > pipe_frequency:
+            ground_scroll -= scroll_speed
+            btm_pipe = Pipes(screenx, int(screeny / 2) + pipe_gap / 2, -1)
+            top_pipe = Pipes(screenx, int(screeny / 2) - pipe_gap / 2, 1)
+            pipe_group.add(btm_pipe)
+            pipe_group.add(top_pipe)
+
     screen.blit(bg, (0, 0))
     screen.blit(trees_img, (ground_scroll, 610))
-    if game_over:
-        ground_scroll -= scroll_speed
 
     berd_group.draw(screen)
     pipe_group.draw(screen)
+
     berd_group.update()
 
     if ground_scroll == -1920:
